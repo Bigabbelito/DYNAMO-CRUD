@@ -10,7 +10,10 @@ exports.handler = async (event) => {
     // Sök efter namn som matchar det angivna namnet
     const searchParams = {
         TableName: 'persons',
-        FilterExpression: 'Name = :personName',
+        FilterExpression: '#name = :personName',
+        ExpressionAttributeNames:{
+            '#name': 'Name'
+        },
         ExpressionAttributeValues: {
             ':personName': Name
         }
@@ -31,7 +34,7 @@ exports.handler = async (event) => {
             const deleteParams = {
                 TableName: 'persons',
                 Key: {
-                    "NameId": name.personId
+                    "personId": name.personId
                 }
             };
             await dynamoClient.delete(deleteParams).promise();
